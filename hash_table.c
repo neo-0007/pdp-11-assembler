@@ -1,20 +1,4 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <time.h>
-
-#define INITIAL_CAPACITY 10
-
-typedef struct{
-    char *key;
-    char *value;
-} ht_item;
-
-typedef struct{
-    ht_item *items;
-    size_t capacity;
-    size_t length;    
-} ht;
+#include "hash_table.h"
 
 ht* ht_create(){
     ht* table = malloc(sizeof(ht));
@@ -54,7 +38,7 @@ unsigned int get_hash(char* input){
     return hash;
 }
 
-void ht_expand(ht** table) {
+int ht_expand(ht** table) {
     ht* old_table = *table;
     size_t old_capacity = old_table->capacity;
 
@@ -64,8 +48,7 @@ void ht_expand(ht** table) {
     new_table->items = calloc(new_table->capacity, sizeof(ht_item));
 
     if (new_table->items == NULL) {
-        perror("Failed to expand hash table");
-        exit(EXIT_FAILURE);
+        return -1;
     }
 
     for (size_t i = 0; i < old_capacity; i++) {
@@ -79,11 +62,15 @@ void ht_expand(ht** table) {
     free(old_table);
 
     *table = new_table;
+
+    return 0;
 }
 
 int ht_insert(ht** table, char* key, char* value){
     if((*table)->length == (*table)->capacity){
-        ht_expand(table);
+        if(ht_expand(table)!=0){
+            return -1;
+        }
     }
 
     unsigned int hash_of_key = get_hash(key);
@@ -112,34 +99,4 @@ char* ht_get_value(ht* table, char* key){
     }
 
     return NULL;
-}
-
-int main(){
-    clock_t start, end;
-    
-    start = clock();
-    ht* test_table = ht_create();
-    end = clock();
-    printf("\nTime taken for creating ht: %f µs\n", (double)(end - start) / CLOCKS_PER_SEC * 1e6);
-
-    start = clock();
-    ht_insert(&test_table, "a", "1");
-    ht_insert(&test_table,"b","2");
-    ht_insert(&test_table,"c","3");
-    end = clock();
-    printf("\nTime taken for insertion: %f µs\n", (double)(end - start) / CLOCKS_PER_SEC * 1e6);
-
-    start = clock();
-    char* valueA = ht_get_value(test_table, "a");
-    char* valueB = ht_get_value(test_table, "b");
-    char* valueC = ht_get_value(test_table, "c");
-    end = clock();
-    printf("\nTime taken for searching: %f µs\n", (double)(end - start) / CLOCKS_PER_SEC * 1e6);
-
-    printf("\nValue at key 'a': %s\n", valueA);
-    printf("\nValue at key 'b': %s\n", valueB);
-    printf("\nValue at key 'c': %s\n", valueC);
-
-    ht_delete(test_table);
-    return 0;
 }
