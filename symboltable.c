@@ -1,0 +1,96 @@
+#include "symboltable.h"
+
+
+char* itobconverter(int num){
+
+	char* bin_string = malloc(sizeof(char)*9);
+	
+	if(bin_string==NULL) 
+		return NULL;
+
+	for(int i = 0; i<8;i++){
+		if((num&(1<<i)) ==0)
+			bin_string[7-i] = '0';
+		else
+			bin_string[7-i] = '1';
+	}
+	bin_string[8] = '\0';
+	return bin_string;
+}
+
+
+ht* symboltable(char ****token_list, int **tokens_per_line, int *lines ){
+	ht* symbol_table = ht_create();
+	int check;
+	for(int i = 0;i<*lines;i++){
+		if((*token_list)[i][0][0]=='.'){
+			if((*tokens_per_line)[i]>1){
+				check = ht_insert(&symbol_table,(*token_list)[i][0],itobconverter(i));
+
+				for(int j = 0; j <(*tokens_per_line)[i]-1;j++){
+					strcpy((*token_list)[i][j],(*token_list)[i][j+1]);
+				}
+				(*tokens_per_line)[i]--;
+
+			}
+			else{	
+				check = ht_insert(&symbol_table,(*token_list)[i][0],itobconverter(i));
+				free((*token_list)[i][0]); // Free token
+				free((*token_list)[i]);    // Free token list for that line
+
+				// Shift lines up
+				memmove((*token_list) + i, (*token_list) + i + 1, (*lines - i - 1) * sizeof(char **));
+				memmove((*tokens_per_line) + i, (*tokens_per_line) + i + 1, (*lines - i - 1) * sizeof(int));
+
+				// Shrink the lists
+				*token_list = realloc(*token_list, (*lines - 1) * sizeof(char **));
+				*tokens_per_line = realloc(*tokens_per_line, (*lines - 1) * sizeof(int));
+
+				(*lines)--; // Decrement total line count
+				i--;
+
+			}
+		}
+	}
+	return symbol_table;
+}
+
+int main(){
+	char ***token_list=NULL;
+	int *tokens_per_line=NULL;
+	ht* symbol_table;
+
+	char* test;
+
+	int lines = tokenlist(&token_list,&tokens_per_line);
+
+	printf("Token List BEFORE REMOVING SYMBOLS:\n\n");
+	for (int i = 0; i < lines; i++) {
+		printf("Line %d: ", i + 1);
+		for (int j = 0; j < tokens_per_line[i]; j++) {
+			printf("%s ", token_list[i][j]);
+		}
+		printf("%d\n",tokens_per_line[i]);
+	}
+
+	symbol_table=symboltable(&token_list,&tokens_per_line,&lines);
+
+	printf("Token List AFTER REMOVING SYMBOLS:\n\n");
+	for (int i = 0; i < lines; i++) {
+		printf("Line %d: ", i + 1);
+		for (int j = 0; j < tokens_per_line[i]; j++) {
+			printf("%s ", token_list[i][j]);
+		}
+		printf("\n");
+	}
+	
+	printf("SYMBOLS WITH THEIR REPRESENTATION: \n");
+	test = ht_get_value(symbol_table,".START");
+	printf("%s :\t%s\n",".START",test);
+	test = ht_get_value(symbol_table,".L1");
+	printf("%s :\t%s\n",".L1",test);
+
+
+	freeall(&token_list,&tokens_per_line,lines);
+	return 0;
+}
