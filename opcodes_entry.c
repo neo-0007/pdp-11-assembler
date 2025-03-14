@@ -1,6 +1,5 @@
 #include "hash_table.h"
-#include <stdio.h>
-#include <stdlib.h>
+
 
 ht_item double_op_opcodes[] = {
     {"MOV", "0001"},
