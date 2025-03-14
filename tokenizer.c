@@ -13,7 +13,10 @@ int tokeniser(char input[],char *tokens[]){
 		if(input[i]==';'){
 			input[i] = '\0';
 			break;		
-		}	
+		}
+		if(input[i]>='a' && input[i]<='z')
+			input[i] = input[i] - 32;
+		
 	}
 
 	token = strtok(input," ,");	//Tokenizing the string
