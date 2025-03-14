@@ -21,4 +21,6 @@ int tokeniser(char input[],char *tokens[]);
 
 int tokenlist(char ****final_token_list, int **tokens_per_line);
 
+
+void freeall(char ****final_token_list,int **tokens_per_line,int lines);
 #endif 
