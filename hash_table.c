@@ -42,29 +42,35 @@ int ht_expand(ht** table) {
     ht* old_table = *table;
     size_t old_capacity = old_table->capacity;
 
+    ht* new_table = malloc(sizeof(ht));
+    if (!new_table) {
+        return -1;
+    }
 
-    ht* new_table = ht_create();
     new_table->capacity = old_capacity * 2;
+    new_table->length = 0;
     new_table->items = calloc(new_table->capacity, sizeof(ht_item));
 
-    if (new_table->items == NULL) {
+    if (!new_table->items) {
+        free(new_table);
         return -1;
     }
 
     for (size_t i = 0; i < old_capacity; i++) {
         if (old_table->items[i].key != NULL) {
-            unsigned int new_index = get_hash(old_table->items[i].key) % new_table->capacity;
-            new_table->items[new_index] = old_table->items[i]; 
+            ht_insert(&new_table, old_table->items[i].key, old_table->items[i].value);
+            free(old_table->items[i].key);
+            free(old_table->items[i].value);
         }
     }
 
     free(old_table->items);
     free(old_table);
-
     *table = new_table;
 
     return 0;
 }
+
 
 int ht_insert(ht** table, char* key, char* value){
     if((*table)->length == (*table)->capacity){
@@ -99,4 +105,13 @@ char* ht_get_value(ht* table, char* key){
     }
 
     return NULL;
+}
+
+int ht_entry_kvlist(ht** table,ht_item kvitems[],size_t num_items){
+    for(size_t i = 0;i < num_items;i++){
+        if(ht_insert(table,kvitems[i].key,kvitems[i].value)!=0){
+            return -1;
+        };
+    }
+    return 0;
 }

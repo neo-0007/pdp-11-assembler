@@ -28,6 +28,7 @@ ht* ht_create();
 void ht_delete(ht* table);
 
 //TO INSERT A KEY VALUE PAIR
+//PASS THE TABLE BY REFERENCE TO INSERT
 //RETURNS 0 (SUCCESS)
 //RETURNS -1 (FAILURE)
 int ht_insert(ht** table, char* key, char* value);
@@ -35,5 +36,10 @@ int ht_insert(ht** table, char* key, char* value);
 //TO GET THE VALUE USING A KEY
 //RETURNS NULL IF KEY IS NOT THERE
 char* ht_get_value(ht* table, char* key);
+
+//TO INSERT A LIST OF HASH TABLE ITEMS IN THE TABLE
+// PASS TABLE BY REFERENCE
+//NEED TO PASS THE ht_items array and the size of that array
+int ht_entry_kvlist(ht** table,ht_item kvitems[],size_t num_items);
 
 #endif 
