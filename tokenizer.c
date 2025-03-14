@@ -1,8 +1,4 @@
-#include<stdio.h>
-#include<string.h> 
-#include<stdlib.h>
-
-#define MAX_TOKENS 6
+#include "tokenizer.h"
 
 int tokeniser(char input[],char *tokens[]){
 	char *token;
@@ -31,7 +27,7 @@ int tokeniser(char input[],char *tokens[]){
 
 }
 
-int token_list(char ****final_token_list, int **tokens_per_line){		//Contains all the tokens of the file
+int tokenlist(char ****final_token_list, int **tokens_per_line){		//Contains all the tokens of the file
 	int lines = 0;
 	char line[50];
 	char *tokens[MAX_TOKENS];
@@ -81,20 +77,4 @@ void freeall(char ****final_token_list,int **tokens_per_line,int lines){
     	free((*final_token_list));
     	free((*tokens_per_line));
 }
-int main(){
-	char ***final_token_list=NULL;
-	int *tokens_per_line=NULL;
 
-	int lines = token_list(&final_token_list,&tokens_per_line);
-	
-	printf("Final Token List:\n");
-    	for (int i = 0; i < lines; i++) {
-        	printf("Line %d: ", i + 1);
-        	for (int j = 0; j < tokens_per_line[i]; j++) {
-            		printf("%s ", final_token_list[i][j]);
-        	}
-        	printf("\n");
-   	 }
-	freeall(&final_token_list,&tokens_per_line,lines);
-	return 0;
-}
