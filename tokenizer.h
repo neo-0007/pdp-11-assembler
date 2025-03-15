@@ -19,7 +19,7 @@ int tokeniser(char input[],char *tokens[]);
 //COLLECTS THE TOKENS FROM EACH LINE AND PUTS THEM INTO AN ARRAY
 //RETURNS NUMBER OF LINES
 
-int tokenlist(char ****final_token_list, int **tokens_per_line);
+int tokenlist(char ****final_token_list, int **tokens_per_line, char* filename);
 
 
 void freeall(char ****final_token_list,int **tokens_per_line,int lines);

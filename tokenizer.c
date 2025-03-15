@@ -33,13 +33,13 @@ int tokeniser(char input[],char *tokens[]){
 
 }
 
-int tokenlist(char ****final_token_list, int **tokens_per_line){		//Contains all the tokens of the file
+int tokenlist(char ****final_token_list, int **tokens_per_line,char* filename){		//Contains all the tokens of the file
 	int lines = 0;
 	char line[50];
 	char *tokens[MAX_TOKENS];
 	int count = 0;
 
-	FILE *file = fopen(argv[argc], "r");
+	FILE *file = fopen(filename, "r");
 	if (file == NULL) {
 		perror("Error opening file");
 		return 1;
