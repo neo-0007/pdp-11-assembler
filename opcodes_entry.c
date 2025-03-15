@@ -1,5 +1,4 @@
-#include "hash_table.h"
-
+#include "opcodes_entry.h"
 
 ht_item double_op_opcodes[] = {
     {"MOV", "0001"},
