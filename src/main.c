@@ -45,7 +45,7 @@ int main(int argc, char *argv[]){
         }else if(opcode_temp->operand_type==DOUBLE_OPERAND){
 
             operand_temp = get_operand_data(final_token_list[i][1]);
-            fprintf(file,"\n%ld : %s",i,operand_temp);
+            fprintf(file,"\n%ld : %s%s",i,opcode_temp->bin_val,operand_temp);
             operand_temp = get_operand_data(final_token_list[i][2]);
             fprintf(file,"%s\n",operand_temp);
 
