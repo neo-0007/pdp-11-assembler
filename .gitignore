@@ -1,1 +1,7 @@
 test.c
+.vscode
+*.out
+*.o
+*.so
+*.exe
+a_to_m.c
