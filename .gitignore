@@ -4,5 +4,4 @@ test.c
 *.o
 *.so
 *.exe
-a_to_m.c
 output
