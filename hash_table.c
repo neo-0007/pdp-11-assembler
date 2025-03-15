@@ -21,7 +21,6 @@ ht* ht_create(){
 void ht_delete(ht* table){
     for (size_t i = 0; i < table->capacity; i++) {
         free(table->items[i].key);
-        free(table->items[i].value);
     }
 
     free(table->items);
@@ -60,7 +59,6 @@ int ht_expand(ht** table) {
         if (old_table->items[i].key != NULL) {
             ht_insert(&new_table, old_table->items[i].key, old_table->items[i].value);
             free(old_table->items[i].key);
-            free(old_table->items[i].value);
         }
     }
 
@@ -72,7 +70,7 @@ int ht_expand(ht** table) {
 }
 
 
-int ht_insert(ht** table, char* key, char* value){
+int ht_insert(ht** table, char* key, int value){
     if((*table)->length == (*table)->capacity){
         if(ht_expand(table)!=0){
             return -1;
@@ -87,13 +85,13 @@ int ht_insert(ht** table, char* key, char* value){
     }
 
     (*table)->items[index].key = strdup(key);
-    (*table)->items[index].value = strdup(value);
+    (*table)->items[index].value = value;
 
     (*table)->length++;
     return 0;
 }
 
-char* ht_get_value(ht* table, char* key){
+int ht_get_value(ht* table, char* key){
     unsigned int hash_of_key = get_hash(key);
     size_t index = hash_of_key % table->capacity;
 
@@ -104,7 +102,7 @@ char* ht_get_value(ht* table, char* key){
         index = (index + 1) % table->capacity; 
     }
 
-    return NULL;
+    return -1;
 }
 
 int ht_entry_kvlist(ht** table,ht_item kvitems[],size_t num_items){

@@ -10,7 +10,7 @@
 //ITEM WITH KEY VALUE PAIR
 typedef struct {
     char *key;
-    char *value;
+    int value;
 } ht_item;
 
 //HASH TABLE 
@@ -28,14 +28,16 @@ ht* ht_create();
 void ht_delete(ht* table);
 
 //TO INSERT A KEY VALUE PAIR
+// Key: str , Value:int
 //PASS THE TABLE BY REFERENCE TO INSERT
 //RETURNS 0 (SUCCESS)
 //RETURNS -1 (FAILURE)
-int ht_insert(ht** table, char* key, char* value);
+int ht_insert(ht** table, char* key, int value);
 
 //TO GET THE VALUE USING A KEY
 //RETURNS NULL IF KEY IS NOT THERE
-char* ht_get_value(ht* table, char* key);
+//Returns the value on success and -1 on failure
+int ht_get_value(ht* table, char* key);
 
 //TO INSERT A LIST OF HASH TABLE ITEMS IN THE TABLE
 // PASS TABLE BY REFERENCE
