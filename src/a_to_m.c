@@ -15,6 +15,7 @@
     0110 000001 000010
 */
 
+
 bin_value_with_type* get_opcode_data(char* opcode,ht* so_table,ht* do_table,ht* bo_table){
     char* bin_value;
     bin_value_with_type* result = malloc(sizeof(bin_value_with_type));
@@ -49,10 +50,14 @@ bin_value_with_type* get_opcode_data(char* opcode,ht* so_table,ht* do_table,ht* 
 }
 
 
-char* get_operand_data(char* operand){
+operand_data get_operand_data(char* operand){
     int reg_num;
+    int x_value = 0;
     int mode = -1;
-    static char binary_str[8];
+    operand_data result;
+    
+    strcpy(result.binary_str, "");  // Initialize as empty
+    strcpy(result.x_binary, "");
 
     // Register Mode (Rn)
     if (sscanf(operand, "R%d", &reg_num) == 1) {
@@ -79,26 +84,34 @@ char* get_operand_data(char* operand){
         mode = 0b101;
     }
     // Indexed X(Rn) (ignore X, only extract Rn)
-    else if (sscanf(operand, "%*d(R%d)", &reg_num) == 1) {
+    else if (sscanf(operand, "%d(R%d)",&x_value,&reg_num) == 2) {
         mode = 0b110;
     }
     // Indexed Deferred @X(Rn) (ignore X, only extract Rn)
-    else if (sscanf(operand, "@%*d(R%d)", &reg_num) == 1) {
+    else if (sscanf(operand, "@%d(R%d)",&x_value,&reg_num) == 2) {
         mode = 0b111;
     }
     
     if (mode == -1 || reg_num < 0 || reg_num > 7) {
-        return NULL; // Invalid operand
+        strcpy(result.binary_str, "ERROR");
+        return result; 
     }
 
     int value = (mode << 3) | reg_num;
 
     for (int i = 5; i >= 0; i--) {
-        binary_str[5 - i] = ((value >> i) & 1) ? '1' : '0';
+        result.binary_str[5 - i] = ((value >> i) & 1) ? '1' : '0';
     }
-    binary_str[6] = '\0';
+    result.binary_str[6] = '\0';
 
-    return binary_str;
+    if(mode == 0b110 || mode == 0b111){
+	    for(int i = 15; i>=0;i--){
+	    	result.x_binary[15 - i] = ((x_value >> i) & 1) ? '1' : '0';
+	    }
+	    result.x_binary[16] = '\0';
+    }
+
+    return result;
 }
 
 

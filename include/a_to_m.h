@@ -15,8 +15,13 @@ typedef struct{
     op_type operand_type;
 } bin_value_with_type;
 
+typedef struct {
+    char binary_str[7];   // 6-bit binary representation of mode + reg
+    char x_binary[17];    // 16-bit binary representation of X (if applicable)
+} operand_data;
+
 bin_value_with_type* get_opcode_data(char* opcode,ht* so_table,ht* do_table,ht* bo_table);
 
-char* get_operand_data(char* operand);
+operand_data get_operand_data(char* operand);
 
 #endif

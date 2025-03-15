@@ -9,7 +9,9 @@ int main(int argc, char *argv[]){
     int line_count;
     int temp;
     bin_value_with_type* opcode_temp;
-    char* operand_temp;
+    operand_data operand_temp;
+    operand_data operand_temp2;
+    char* address_temp;
 
     char ***final_token_list = NULL;
     int *tokens_per_line = NULL;
@@ -40,25 +42,32 @@ int main(int argc, char *argv[]){
         if(opcode_temp->operand_type==SINGLE_OPERAND){
 
             operand_temp = get_operand_data(final_token_list[i][1]);
-            fprintf(file,"\n%ld : %s%s\n",i,opcode_temp->bin_val,operand_temp);
+            fprintf(file,"%s%s",opcode_temp->bin_val,operand_temp.binary_str);
+	    if(strlen(operand_temp.x_binary)>0)
+		    fprintf(file,"\n%s",operand_temp.x_binary);
 
         }else if(opcode_temp->operand_type==DOUBLE_OPERAND){
 
             operand_temp = get_operand_data(final_token_list[i][1]);
-            fprintf(file,"\n%ld : %s%s",i,opcode_temp->bin_val,operand_temp);
-            operand_temp = get_operand_data(final_token_list[i][2]);
-            fprintf(file,"%s\n",operand_temp);
+            fprintf(file,"%s%s",opcode_temp->bin_val,operand_temp.binary_str); 
+            operand_temp2 = get_operand_data(final_token_list[i][2]);
+            fprintf(file,"%s",operand_temp2.binary_str);
+	    if(strlen(operand_temp.x_binary)>0){
+		    fprintf(file,"\n%s",operand_temp.x_binary);}
+	    if(strlen(operand_temp2.x_binary)>0){
+		    fprintf(file,"\n%s",operand_temp2.x_binary);}
 
         }else if(opcode_temp->operand_type==BRANCH_OPERAND){
 
             temp = ht_get_int_value(symbol_table,final_token_list[i][1]);
             temp = temp-(i+1);
-            operand_temp = itobconverter(temp);
-            fprintf(file,"\n%ld : %s%s\n",i,opcode_temp->bin_val,operand_temp);
+            address_temp = itobconverter(temp);
+            fprintf(file,"%s%s",opcode_temp->bin_val,address_temp);
 
         }else if(opcode_temp->operand_type==INVALID_OPERAND){
             fprintf(file,"\nLine[%ld] has error\n",i);
         }
+	fprintf(file,"\n");
     }
 
     freeall(&final_token_list,&tokens_per_line,line_count);
