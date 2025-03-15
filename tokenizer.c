@@ -39,7 +39,7 @@ int tokenlist(char ****final_token_list, int **tokens_per_line){		//Contains all
 	char *tokens[MAX_TOKENS];
 	int count = 0;
 
-	FILE *file = fopen("input.asm", "r");
+	FILE *file = fopen(argv[argc], "r");
 	if (file == NULL) {
 		perror("Error opening file");
 		return 1;

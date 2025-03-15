@@ -9,4 +9,7 @@
 //RETURNS SYMBOL HASH TABLE
 ht* symboltable(char ****token_list, int **tokens_per_line, int *lines );
 
+
+char* itobconverter(int num);
+
 #endif
