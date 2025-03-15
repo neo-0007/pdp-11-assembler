@@ -125,6 +125,7 @@ int ht_get_int_value(ht* table,char* key){
     }
 
     int data_int = strtol(data,NULL,2);
+    free(data);
     return data_int;
 }
 
