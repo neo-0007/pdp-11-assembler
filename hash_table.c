@@ -107,6 +107,27 @@ char* ht_get_value(ht* table, char* key){
     return NULL;
 }
 
+int ht_get_int_value(ht* table,char* key){
+    char* data = NULL;
+    unsigned int hash_of_key = get_hash(key);
+    size_t index = hash_of_key%(table->capacity);
+    
+    while(table->items[index].key!=NULL){
+        if(strcmp(table->items[index].key,key)==0){
+            data = table->items[index].value;
+            break;
+        }
+        index= (index+1) % table->capacity;
+    }
+
+    if(data==NULL){
+        return -1;
+    }
+
+    int data_int = strtol(data,NULL,2);
+    return data_int;
+}
+
 int ht_entry_kvlist(ht** table,ht_item kvitems[],size_t num_items){
     for(size_t i = 0;i < num_items;i++){
         if(ht_insert(table,kvitems[i].key,kvitems[i].value)!=0){
