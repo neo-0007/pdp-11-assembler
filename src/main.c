@@ -20,7 +20,7 @@ int main(int argc, char *argv[]){
     ht* do_table = ht_create();
     ht* bo_table = ht_create();
 
-    FILE *file = fopen("output.txt", "w");
+    FILE *file = fopen("output.o", "w");
 	if (file == NULL) {
 		perror("Error opening file");
 		return 1;
