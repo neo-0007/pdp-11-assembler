@@ -35,7 +35,7 @@ int main(int argc, char *argv[]){
     line_count = tokenlist(&final_token_list, &tokens_per_line,argv[argc-1]);
     symbol_table = symboltable(&final_token_list,&tokens_per_line,&line_count);
 
-    for (size_t i = 0; i<line_count;i++){
+    for (int i = 0; i<line_count;i++){
         opcode_temp =  get_opcode_data(final_token_list[i][0],so_table,do_table,bo_table);
 
 
@@ -65,7 +65,7 @@ int main(int argc, char *argv[]){
             fprintf(file,"%s%s",opcode_temp->bin_val,address_temp);
 
         }else if(opcode_temp->operand_type==INVALID_OPERAND){
-            fprintf(file,"\nLine[%ld] has error\n",i);
+            fprintf(file,"\nLine[%d] has error\n",i);
         }
 	fprintf(file,"\n");
     }

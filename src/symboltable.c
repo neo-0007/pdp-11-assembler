@@ -21,7 +21,6 @@ char* itobconverter(int num){
 
 ht* symboltable(char ****token_list, int **tokens_per_line, int *lines ){
 	ht* symbol_table = ht_create();
-	int check;
 	int s_length;
 	char* first_element,*label=NULL;
 	for(int i = 0;i<*lines;i++){
@@ -32,7 +31,7 @@ ht* symboltable(char ****token_list, int **tokens_per_line, int *lines ){
 			strncpy(label,first_element,s_length-1);
 			label[s_length-1] = '\0';
 			if((*tokens_per_line)[i]>1){
-				check = ht_insert(&symbol_table,label,itobconverter(i));
+				ht_insert(&symbol_table,label,itobconverter(i));
 
 				for(int j = 0; j <(*tokens_per_line)[i]-1;j++){
 					strcpy((*token_list)[i][j],(*token_list)[i][j+1]);
@@ -41,7 +40,7 @@ ht* symboltable(char ****token_list, int **tokens_per_line, int *lines ){
 
 			}
 			else{	
-				check = ht_insert(&symbol_table,label,itobconverter(i));
+				ht_insert(&symbol_table,label,itobconverter(i));
 				free((*token_list)[i][0]); // Free token
 				free((*token_list)[i]);    // Free token list for that line
 				(*token_list)[i] = NULL;

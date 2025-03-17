@@ -2,7 +2,7 @@
 
 int tokeniser(char input[],char *tokens[]){
 	char *token;
-	int count =0,i;
+	int count =0;
 
 	//Removing the comments before tokenizing 
 	for(int i =0; input[i] != '\0';i++){
@@ -46,7 +46,6 @@ int tokenlist(char ****final_token_list, int **tokens_per_line,char* filename){	
 	}
 
 	while (fgets(line, sizeof(line), file) != NULL) {
-		size_t len = strlen(line);
 
 		count = tokeniser(line,tokens);	
 
